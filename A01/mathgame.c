@@ -1,11 +1,54 @@
 /***************************************************
  * mathgame.c
- * Author: 
- * Implements a math game
+ * Author: Sanil Kagalwala
+ * Implements program that plays a math game with user. The user chooses the number of rounds and is asked to add two numbers  * between 1 and 9. Their final score will be displayed.
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
-  return 0;
+
+// variable decleration
+int numQuestions;
+int numCorrect = 0;
+
+// welcome message
+printf("Welcome to the Math Game\n");
+
+srand(time(NULL)); //  call once
+
+printf("How many rounds do you want to play?\n");
+scanf("%d", &numQuestions); 
+
+
+if (numQuestions < 1) {
+	printf("Game over! Invalid number of rounds inputted.\n");
+	return 0;
+}
+
+// loop
+for (int i = 0; i < numQuestions; i++) {
+	// generate two random numbers between 1 and 9
+	int num1 = rand() % (9 - 1 + 1) + 1;
+	int num2 = rand() % (9 - 1 + 1) + 1;
+
+	printf("%d + %d = ? ", num1, num2);
+	
+	int answer;
+	scanf("%d", &answer); 
+
+	if (answer == num1 + num2) {
+		printf("Correct!\n");
+		numCorrect++;
+	} else {
+		printf("Incorrect :(\n");
+	}
+}
+
+printf("Game over! You answered %d/%d questions correctly.\n", numCorrect, numQuestions);
+
+return 0;
+  
 }
