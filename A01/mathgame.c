@@ -1,7 +1,9 @@
 /***************************************************
  * mathgame.c
  * Author: Sanil Kagalwala
- * Implements program that plays a math game with user. The user chooses the number of rounds and is asked to add two numbers  * between 1 and 9. Their final score will be displayed.
+ * Date: 23rd Jan 2025
+ * Implements program that plays a math game with user. The user chooses the number of rounds and is asked to add two numbers  
+ * between 1 and 9. Their final score will be displayed.
  */
 
 #include <stdio.h>
@@ -13,6 +15,8 @@ int main() {
 // variable decleration
 int numQuestions;
 int numCorrect = 0;
+int minNum = 1;
+int maxNum = 9;
 
 // welcome message
 printf("Welcome to the Math Game\n");
@@ -31,8 +35,9 @@ if (numQuestions < 1) {
 // loop
 for (int i = 0; i < numQuestions; i++) {
 	// generate two random numbers between 1 and 9
-	int num1 = rand() % (9 - 1 + 1) + 1;
-	int num2 = rand() % (9 - 1 + 1) + 1;
+	// rand 
+	int num1 = rand() % maxNum + 1; 
+	int num2 = rand() % (maxNum - minNum + 1) + 1;
 
 	printf("%d + %d = ? ", num1, num2);
 	
