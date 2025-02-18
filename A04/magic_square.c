@@ -83,7 +83,7 @@ int main() {
     printf("Matrix:\n");
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            printf("%d ", matrix[i][j]);  // Fix: Remove '&' to print value
+            printf("%d ", matrix[i][j]); 
         }
         printf("\n");
     }
