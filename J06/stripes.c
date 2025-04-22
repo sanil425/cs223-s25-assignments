@@ -17,7 +17,14 @@ struct thread_data {
 
 void *start(void* userdata) {
   struct thread_data* data = (struct thread_data*) userdata;
-  // todo: your code here
+
+  // update color for all pixels within start and end
+  for (int i = data->starti; i < data->endi; i++) {
+    for (int j = 0; j <data->width;j++) {
+      int index = i * data->width + j; // same logic as assignments to compute 1d index using (i,j) coordinates 
+      data->image[index] =data->color;  // update color
+    }
+  }
   return 0;
 }
 
@@ -37,6 +44,26 @@ int main(int argc, char** argv) {
   struct thread_data* data = malloc(sizeof(struct thread_data) * N);
 
   for (int i = 0; i < N; i++) {
+    // add relevant info to thread data struct
+    data[i].width = size;
+    data[i].height = size;
+    data[i].image = image;
+
+    // divy up rows between N threads
+    int chunk = size / N;
+    data[i].starti = i * chunk;
+    if (i == N - 1) data[i].endi = size;  // if the thread is the last thread, the end index will just be size
+    else data[i].endi = (i +1) *chunk; // else its just the start of the thread i+1
+
+    // randomise colour
+    data[i].color.red = rand() % 256; 
+    data[i].color.green = rand() % 256;
+    data[i].color.blue = rand() % 256;
+
+    // to make coherent with sampel output
+    // endi-1 as endi excludes the last row so is techincally not in the range of what is being covered by thread i
+    printf("Thread is colouring rows %d to %d with colour: %d %d %d\n", data[i].starti, data[i].endi-1,
+            data[i].color.red,  data[i].color.green,  data[i].color.blue);
     pthread_create(&threads[i], NULL, start, &data[i]);
   }
 
@@ -45,4 +72,9 @@ int main(int argc, char** argv) {
   }
 
   write_ppm("stripes.ppm", image, size, size);
+  free(image); // free all the malloc from the base code
+  free(colors);
+  free(threads);
+  free(data);
 }
+
